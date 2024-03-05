@@ -3,7 +3,7 @@
 #include <complex>
 #include <assert.h>
 #include <cstdlib>
-#include "Master.hpp"
+#include "../include/Master.hpp"
 #include "mpi.h"
 #include "dmumps_c.h"
 

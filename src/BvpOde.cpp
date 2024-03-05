@@ -2,7 +2,7 @@
 #include <cassert>
 #include <fstream>
 #include <cstdio>
-#include "Master.hpp"
+#include "../include/Master.hpp"
 
 
 BvpOde::BvpOde(Input* Ode, BoundaryCondition* tbc_mp, Grid* grid_1)

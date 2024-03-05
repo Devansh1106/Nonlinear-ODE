@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Master.hpp"
+#include "../include/Master.hpp"
 Input::Input(double coeffUxx,double coeffUx,double coeffU,double (*righthandside)(double))
 {
 	mCoeffUxx = coeffUxx;

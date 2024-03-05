@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Master.hpp"
+#include "../include/Master.hpp"
 
 Vector::Vector(int anumNodes)
 {

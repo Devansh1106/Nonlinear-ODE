@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cassert>
 #include <fstream>
-#include "Master.hpp"
+#include "../include/Master.hpp"
 
 Matrix::Matrix(const Matrix& othermatrix)
 {
