@@ -2,7 +2,7 @@
 #include <vector>
 #include <cassert>
 #include <fstream>
-#include "Master.hpp"
+#include "../include/Master.hpp"
 using namespace std;
 
 Grid::Grid(double xMinimum, double xMaximum, int mNodes)

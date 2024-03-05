@@ -11,9 +11,9 @@ CPP := mpic++ $(DEF_FLAGS_CPP)
 
 CC := mpic++ $(DEF_FLAGS_CC)
 
-DIR_SRC_CPP := $(wildcard *.cpp) 
+DIR_SRC_CPP := $(wildcard src/*.cpp) 
 
-DIR_SRC_CC:= Solver.c
+DIR_SRC_CC:= src/Solver.c
 
 CFLAGS = -I C/MUMPS_5.5.1/include -I include
 

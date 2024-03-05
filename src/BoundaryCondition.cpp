@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cassert>
-#include "Master.hpp"
+#include "../include/Master.hpp"
 BoundaryCondition::BoundaryCondition()
 {
 	IsNeumannLhs = false;

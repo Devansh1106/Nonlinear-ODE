@@ -1,6 +1,6 @@
 #include<cmath>
 #include<iostream>
-#include "Master.hpp"
+#include "../include/Master.hpp"
 using namespace std;
 double model_prob_rhs(double x){return 0;}
 
