@@ -1,2 +1,12 @@
 *.out
 *.exe
+main_cpp
+check.txt
+valgrind_output.txt
+vec4.txt
+sum.txt
+mat4.txt
+rhs_vec.txt
+matrix.txt
+anjs.txt
+a1.txt

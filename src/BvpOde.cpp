@@ -97,24 +97,32 @@ void BvpOde::ApplyBcMatrix()
 
 Vector* BvpOde::InitialGuess()
 {
+	// std::ofstream de("check2.txt");
 	assert(mu != NULL);
 	double num;
 	int i = 0;
-	FILE *file_1 = fopen("solution_values.txt", "r");
-	if (file_1 != NULL)
-	{																		//Working fine
-		while(fscanf(file_1, "%lf", &num)!=EOF and i < n1)
+	// std::ofstream de6("check2.txt");
+	std::ifstream file_1("initial-guess/solution_values.txt");
+	// FILE *file_1 = fopen("solution_values.txt", "r");
+	if (file_1)
+	{					
+		// std::ofstream de6("check2.txt");													//Working fine
+		while(file_1 >> num and i < n1)
 	  	{
 	  		(*mu)(i) = num;
 	  		i++;
 	  	}
 	}
 	else {std::cout<<"Error opening file InitialGuess.txt! ";}
-	fclose(file_1);
+	// std::ofstream de6("check2.txt");
+	file_1.close();
+	// fclose(file_1);
+	std::ofstream de("check.txt");
+	// de.close();
 	return mu;
 }
 
-Matrix* BvpOde::MatrixGen(Vector& mpu, int iter)
+Matrix* BvpOde::MatrixGen(Vector& mpu)
 {
 	mmu = &mpu;
 	double A = mOde->mCoeffUxx;
@@ -133,21 +141,19 @@ Matrix* BvpOde::MatrixGen(Vector& mpu, int iter)
 		(*mA)(i, i) = beta;
 		(*mA)(i,i+1) = alpha;
 	}
-	if(iter == 4){
-		std::ofstream f2("matrix.txt");
-	    for(int i = 0; i < n1; i++)
+	std::ofstream f2("matrix.txt");
+	for(int i = 0; i < n1; i++)
+	{
+		for(int j = 0; j < n1; j++)
 		{
-			for(int j = 0; j < n1; j++)
-			{
-				f2<<(*mA)(i,j)<<" ";
-			}
-			f2<<"\n";
+			f2<<(*mA)(i,j)<<" ";
 		}
+		f2<<"\n";
 	}
 	return mA;
 }
 
-Vector* BvpOde::VectorGen(Vector& mpu, int iter)
+Vector* BvpOde::VectorGen(Vector& mpu)
 {
 	mmu = &mpu; 
 	double A = mOde->mCoeffUxx;

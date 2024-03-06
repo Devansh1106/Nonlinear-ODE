@@ -86,8 +86,8 @@ public:
 	~BvpOde();
 	void ApplyBcMatrix();
 	void ApplyBcVector();
-	Matrix* MatrixGen(Vector& mpu, int iter);
-	Vector* VectorGen(Vector& mpu, int iter);
+	Matrix* MatrixGen(Vector& mpu);
+	Vector* VectorGen(Vector& mpu);
 	Vector* InitialGuess();
 };
 

@@ -2,7 +2,6 @@
 #include <fstream>
 #include <complex>
 #include <assert.h>
-#include <cstdlib>
 #include "../include/Master.hpp"
 #include "mpi.h"
 #include "dmumps_c.h"
@@ -51,7 +50,6 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 	// }
 
 	sum_rhs = (double*)malloc(1 * sizeof(double));
-	// *sum_rhs = 0;
 
 	if (myid == 0)
 	{
@@ -99,16 +97,22 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 	while (iter < max_iter)
 	{
 		*sum_rhs = 0;
-		err_sol = 0;
 		if (myid == 0)
 		{
+			// if(myid == 0){
+			// std::cout<<"rank 0 here!";
+			// std::ofstream de("check.txt");
+			// }
 			if (flag_3 == 0)
 			{
+				// std::ofstream de("check.txt");
 				U = bvpode->InitialGuess();
 				// std::ofstream f0("che.txt");
 				bvpode->ApplyBcMatrix();
+				// std::ofstream f0("che.txt");
 				bvpode->ApplyBcVector();
 				flag_3 = 1;
+
 			}
 			// std::ofstream f121("update.txt");
     		// for(int i = 0; i < N; i++)
@@ -116,8 +120,7 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 			// 	f121<<(*U)(i)<<"\n";
 			// }
 			// f121.close();
-
-			V_final = bvpode->VectorGen(*U, iter);
+			V_final = bvpode->VectorGen(*U);
 			// double summation = 0;
 			// for(int i = 0; i < N; i++){
 			// 	double y = (*V_final)[i];
@@ -129,8 +132,8 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 			// 	break;
 			// }
 			// printf("\nSummation - %lf\n",summation);
-			M_final = bvpode->MatrixGen(*U, iter);
-			// if (iter == 4){
+			M_final = bvpode->MatrixGen(*U);
+			// if (myid == 0){
 			// 	std::ofstream mat("mat4.txt");
 			// 	std::ofstream vec("vec4.txt");
 			// 	for (size_t i = 0; i < N; i++){
@@ -184,14 +187,18 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 			MPI_Bcast(rhs, N, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 		}
 
-		// if (myid == 3){
-		// 	std::ofstream a1("a1.txt");
-		// 	for(size_t f = 0; f < len_a; f++){
-		// 		a1<<a[f]<<"\n";
-		// 	}
-		// 	a1.close();
-		// 	// std::cout<<"rank 7";
-		// }
+		if (myid == 6){
+			if(iter == 4){
+				std::ofstream a1("a1.txt");
+				for(size_t f = 0; f < N; f++){
+					a1<<rhs[f]<<"\n";
+				}
+				a1.close();
+				// std::cout<<"rank 7";
+			}
+		}
+
+
 
 		MPI_Barrier(MPI_COMM_WORLD);
 		// if (myid == 7){
@@ -210,6 +217,7 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 			id.n = n; id.nnz = len_a; id.irn = irn; id.jcn = jcn;
 			id.a = a; id.rhs = rhs;
 		}
+
 
 		// if (iter == 4){
 		// 	std::ofstream mat("mat4.txt");
@@ -256,7 +264,7 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 		{
 			std::ofstream f09("anjs.txt");
 			double err = 0;
-			double old_rhs[N];
+			// double old_rhs[N];
 			
 			for (int i=0; i < N; i++)
 			{
@@ -271,9 +279,9 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 				f09<<(*V_final)[i]<<" ";
 				f09<<*sum_sol<<"\n";
 			}
-			for(int z = 0; z < N; z++){
-				old_rhs[z] = rhs[z];
-			}
+			// for(int z = 0; z < N; z++){
+			// 	old_rhs[z] = rhs[z];
+			// }
 
 			f09.close();
 			std::ofstream f1("sum.txt");
@@ -283,6 +291,7 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 			f1<<"Sum "<<(*sum_rhs);
 			f1.close();
 		}
+		// std::ofstream fgh("here.txt");
 		MPI_Bcast(sum_rhs, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 		if((*sum_rhs) < 1e-8)
 		{
@@ -295,6 +304,7 @@ void Solving(int argc, char** argv, Input* Ode, BoundaryCondition* tbc_mp, Grid*
 		MPI_Barrier(MPI_COMM_WORLD);
 	}
 
+	// std::ofstream fgh("here.txt");
 	if (iter < max_iter)
 	{
 		if(myid == 0)
