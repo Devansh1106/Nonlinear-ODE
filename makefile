@@ -34,4 +34,6 @@ $(PROG_CPP):$(OBJS_CPP) $(OBJS_MPI)
 
 run: all
 	mpirun -np 8 ./$(PROG_CPP)
+	# mpirun -np 8 sh -c 'if [ $$OMPI_COMM_WORLD_RANK -eq 0 ]; then valgrind --leak-check=full ./$(PROG_CPP) > valgrind_output.txt 2>&1; else ./$(PROG_CPP); fi'
+
 	#./$(PROG_MPI)
